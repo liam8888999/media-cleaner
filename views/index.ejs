@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Archive Cleaner</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #4d4d4d;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        center {
+            text-align: center;
+        }
+
+        #container {
+            flex: 1;
+            display: flex;
+            max-height: 60%;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #video-container {
+            width: 30%;
+            height: 60%;
+            float: right;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+        }
+
+        #info-container {
+            width: 70%;
+            height: 60%;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <center><h1>Archive Cleaner</h1></center>
+    <% if (noVideo) { %>
+  <div id="noVideoMessage">
+    <center><h1>No video files found. Please check again later.</h1></center>
+    <br>
+    <br>
+    <center><a href="/" style="color: white;">Retry</a></center>
+  </div>
+<% } %>
+<% if (videoInfo !== null) { %>
+
+    <div id="container">
+      <div id="info-container">
+          <center><h2>Video Information</h2></center>
+          <p>Filename: <%= videoInfo.filename %></p>
+          <p>Duration: <%= videoInfo.duration %></p>
+          <p>Resolution: <%= videoInfo.resolution.width %>x<%= videoInfo.resolution.height %></p>
+          <p>Codec: <%= videoInfo.codec %></p>
+
+          <center><h2>Rename/Move File</h2></center>
+          <form method="post" action="/rename">
+              <label for="newFileName">New File Name:</label>
+              <input type="text" name="newFileName" id="newFileName" required>
+              <label for="newLocation">New Location (required):</label>
+              <input type="text" name="newLocation" id="newLocation" required>
+              <input type="text" name="currentVideo" id="currentVideo" value="<%= videoInfo.filename %>" required style="display: none;">
+              <button type="submit">Move</button>
+          </form>
+      </div>
+        <div id="video-container">
+            <video controls autoplay>
+                <source src="/video/<%= videoInfo.videoname %>" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+  
+    <% } %>
+</body>
+</html>
