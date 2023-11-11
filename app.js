@@ -100,6 +100,14 @@ app.get('/video/:filename', (req, res) => {
 });
 
 app.post('/rename', (req, res) => {
+  const userSession = req.session;
+
+ // Initialize a counter if not present in the session
+ userSession.renameCounter = userSession.renameCounter || 0;
+
+ // Increment the counter
+ userSession.renameCounter++;
+
   const currentVideo = req.body.currentVideo;
   const showName = req.body.showName;
   const season = req.body.newseason;
@@ -123,7 +131,14 @@ app.post('/rename', (req, res) => {
       return res.status(500).send('Error moving the file.');
     }
 
-    res.redirect('/');
+    // Check if the user has made 15 rename requests
+        if (userSession.renameCounter === 15) {
+          // Display a message to the user
+          res.send('Congratulations! You have made 15 rename requests.');
+        } else {
+          // Redirect to the home page or any other desired page
+          res.redirect('/');
+        }
   });
 });
 
