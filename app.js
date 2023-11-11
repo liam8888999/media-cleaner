@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 const path = require('path');
@@ -6,36 +7,58 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
+// Use sessions
+app.use(session({
+  secret: 'your-secret-key', // Change this to a secure random string
+  resave: false,
+  saveUninitialized: true,
+}));
+
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-let videoDirectory = path.join(__dirname, 'videos');
+let videoDirectory = '/Users/liam/Documents/GitHub/media-cleaner/videos';
 
 app.get('/', (req, res) => {
-  fs.readdir(videoDirectory, (err, files) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Error reading video files.');
-    }
+  // Redirect to the /next route
+  res.redirect('/next');
+});
+
+app.get('/next', async (req, res) => {
+  const userSession = req.session;
+
+  try {
+    const files = await fs.promises.readdir(videoDirectory);
 
     // Filter out files starting with a dot (hidden files)
-    files = files.filter(file => !file.startsWith('.'));
+    const filteredFiles = files.filter(file => !file.startsWith('.'));
 
-    if (files.length === 0) {
-      // Display the "No video files found" message graphically
+    if (filteredFiles.length === 0) {
       return res.render('index', { videoInfo: null, noVideo: true });
     }
 
-    // Pick the first video file from the directory
-    const currentVideo = files[0];
-    const videoPath = path.join(videoDirectory, currentVideo);
+    // Randomly select the first video if not set in the session
+    if (!userSession.currentVideo) {
+      userSession.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
+    }
 
-    // Display video information and rename form
+    const videoPath = path.join(videoDirectory, userSession.currentVideo);
+    const videoInfo = await getVideoInfo(videoPath);
+
+    res.render('index', { videoInfo, noVideo: false });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Error reading video files.');
+  }
+});
+
+async function getVideoInfo(videoPath) {
+  return new Promise((resolve, reject) => {
     ffmpeg.ffprobe(videoPath, (err, metadata) => {
       if (err) {
         console.error(err);
-        return res.status(500).send('Error processing video file.');
+        reject('Error processing video file.');
       }
 
       const durationInSeconds = metadata.format.duration;
@@ -51,19 +74,20 @@ app.get('/', (req, res) => {
 
       const videoInfo = {
         codec: videoStream.codec_name,
-        videoname: currentVideo,
+        videoname: path.basename(videoPath),
         filename: videoPath,
         duration: `${hours}:${minutes}:${seconds}`,
         resolution: resolution,
       };
 
-      res.render('index', { videoInfo, noVideo: false });
+      resolve(videoInfo);
     });
   });
-});
+}
 
 app.get('/video/:filename', (req, res) => {
   const videoPath = path.join(videoDirectory, req.params.filename);
+  console.log(videoPath)
   const stat = fs.statSync(videoPath);
 
   res.writeHead(200, {
@@ -77,8 +101,13 @@ app.get('/video/:filename', (req, res) => {
 
 app.post('/rename', (req, res) => {
   const currentVideo = req.body.currentVideo;
-  const newFileName = req.body.newFileName;
+  const showName = req.body.showName;
+  const season = req.body.newseason;
+  const episode = req.body.newepisode;
+  const episodeName = req.body.episodeName;
   const newLocation = req.body.newLocation;
+
+  const newName = `${showName} - ${season}x${episode} - ${episodeName}`
 
   const fileExtension = path.extname(currentVideo);
 
@@ -86,7 +115,7 @@ app.post('/rename', (req, res) => {
     return res.status(400).send('New Location is required.');
   }
 
-  const newFileLocation = path.join(newLocation, `${newFileName}${fileExtension}`);
+  const newFileLocation = path.join(newLocation, `${newName}${fileExtension}`);
   console.log(newFileLocation)
   fs.rename(currentVideo, newFileLocation, (err) => {
     if (err) {

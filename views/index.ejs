@@ -58,7 +58,7 @@
     <center><a href="/" style="color: white;">Retry</a></center>
   </div>
 <% } %>
-<% if (videoInfo !== null) { %>
+
 
     <div id="container">
       <div id="info-container">
@@ -70,22 +70,36 @@
 
           <center><h2>Rename/Move File</h2></center>
           <form method="post" action="/rename">
-              <label for="newFileName">New File Name:</label>
-              <input type="text" name="newFileName" id="newFileName" required>
+              <label for="showName">Show Name:</label>
+              <input type="text" name="showName" id="showName" required>
+              <br>
+              <label for="newseason">Season Number:</label>
+              <input type="number" name="newseason" id="newseason" required>
+              <br>
+              <label for="newepisode">Episode Number:</label>
+              <input type="number" name="newepisode" id="newepisode" required>
+              <br>
+              <label for="episodeName">Episode Name:</label>
+              <input type="text" name="episodeName" id="episodeName" required>
+              <br>
               <label for="newLocation">New Location (required):</label>
               <input type="text" name="newLocation" id="newLocation" required>
               <input type="text" name="currentVideo" id="currentVideo" value="<%= videoInfo.filename %>" required style="display: none;">
+              <br>
               <button type="submit">Move</button>
+          </form>
+          <form method="get" action="/next">
+            <button type="submit">Unsure</button>
           </form>
       </div>
         <div id="video-container">
-            <video controls autoplay>
+            <video controls>
                 <source src="/video/<%= videoInfo.videoname %>" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
     </div>
-  
-    <% } %>
+
+
 </body>
 </html>
