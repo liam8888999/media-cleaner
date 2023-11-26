@@ -24,15 +24,45 @@ app.get('/', (req, res) => {
   // Redirect to the /next route
   res.redirect('/next');
 });
+async function listFilesInDir(directoryPath) {
+  try {
+    const files = await fs.promises.readdir(directoryPath);
+    const filePromises = files.map(async (file) => {
+      const filePath = path.join(directoryPath, file);
+      const stat = await fs.promises.stat(filePath);
 
+      if (stat.isDirectory()) {
+        if (!file.startsWith('.')) { // Ignore hidden directories
+          const subFiles = await listFilesInDir(filePath); // Recursive call
+          return subFiles;
+        }
+      } else {
+        if (!file.startsWith('.')) { // Ignore hidden files
+          return filePath;
+        }
+      }
+    });
+
+    const results = await Promise.all(filePromises);
+    return results.flat().filter(Boolean); // Remove undefined values
+  } catch (error) {
+    logger.error(`Error reading directory for directory listing: ${error}`);
+    return [];
+  }
+}
 app.get('/next', async (req, res) => {
   const userSession = req.session;
 
   try {
-    const files = await fs.promises.readdir(videoDirectory);
+    const files = await listFilesInDir(videoDirectory);
+    console.log(files)
 
     // Filter out files starting with a dot (hidden files)
-    const filteredFiles = files.filter(file => !file.startsWith('.'));
+    const filteredFiles = files.filter(file => {
+  // Check if the file doesn't start with a dot (.)
+  // and has a video file extension compatible with HTML5 (e.g., mp4, webm, ogg)
+  return !file.startsWith('.') && /\.(mp4|webm|ogg)$/i.test(file);
+});
 
     if (filteredFiles.length === 0) {
       return res.render('index', { videoInfo: null, noVideo: true });
@@ -43,7 +73,7 @@ app.get('/next', async (req, res) => {
       userSession.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
     }
 
-    const videoPath = path.join(videoDirectory, userSession.currentVideo);
+    const videoPath = userSession.currentVideo
     const videoInfo = await getVideoInfo(videoPath);
 
     res.render('index', { videoInfo, noVideo: false });
@@ -74,7 +104,7 @@ async function getVideoInfo(videoPath) {
 
       const videoInfo = {
         codec: videoStream.codec_name,
-        videoname: path.basename(videoPath),
+        videoname: videoPath.replace(videoDirectory, ''),
         filename: videoPath,
         duration: `${hours}:${minutes}:${seconds}`,
         resolution: resolution,
@@ -85,19 +115,24 @@ async function getVideoInfo(videoPath) {
   });
 }
 
-app.get('/video/:filename', (req, res) => {
-  const videoPath = path.join(videoDirectory, req.params.filename);
-  console.log(videoPath)
-  const stat = fs.statSync(videoPath);
+app.get('/video/:path*', (req, res) => {
+  const videoPath = path.join(videoDirectory, req.params.path, req.params[0]);
 
-  res.writeHead(200, {
-    'Content-Type': 'video/mp4',
-    'Content-Length': stat.size,
-  });
+  try {
+    const stat = fs.statSync(videoPath);
+    const videoStream = fs.createReadStream(videoPath);
 
-  const videoStream = fs.createReadStream(videoPath);
-  videoStream.pipe(res);
+    res.writeHead(200, {
+      'Content-Length': stat.size,
+    });
+
+    videoStream.pipe(res);
+  } catch (error) {
+    console.error('Error serving video:', error);
+    res.status(404).send('Not Found');
+  }
 });
+
 
 app.post('/rename', (req, res) => {
   const userSession = req.session;

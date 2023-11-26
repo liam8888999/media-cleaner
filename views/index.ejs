@@ -46,6 +46,9 @@
             height: 60%;
             float: left;
         }
+    .hidden {
+      display: none;
+    }
     </style>
 </head>
 <body>
@@ -88,13 +91,27 @@
               <br>
               <button type="submit">Move</button>
           </form>
-          <form method="get" action="/next">
-            <button type="submit">Unsure</button>
-          </form>
+          <br>
+          <script>
+  // Wait for 30 seconds (30000 milliseconds) before showing the form
+  setTimeout(function() {
+    // Get the form element by id
+    const form = document.getElementById('unsurebutton');
+
+    // Show the form by removing the "hidden" class
+    form.classList.remove('hidden');
+  }, 30000); // 30 seconds
+
+</script>
+
+<!-- Your form with the "hidden" class initially -->
+<form method="get" action="/next" class="hidden" id="unsurebutton">
+  <button type="submit">Unsure</button>
+</form>
       </div>
         <div id="video-container">
             <video controls>
-                <source src="/video/<%= videoInfo.videoname %>" type="video/mp4">
+                <source src="/video<%= videoInfo.videoname %>">
                 Your browser does not support the video tag.
             </video>
         </div>
