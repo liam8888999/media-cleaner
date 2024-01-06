@@ -205,7 +205,7 @@ app.post('/rename', async (req, res) => {
           res.send('Congratulations! You have made 15 rename requests. The current access details are:');
         } else {
           // Redirect to the home page or any other desired page
-          res.redirect('/');
+          res.redirect('/next');
         }
   });
 });
