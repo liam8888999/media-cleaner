@@ -101,7 +101,7 @@ app.get('/next', async (req, res) => {
     const videoPath = req.session.currentVideo;
     const videoInfo = await getVideoInfo(videoPath);
 
-    res.render('index', { videoInfo, noVideo: false });
+    res.render('index', { videoInfo, noVideo: false, progress: req.session.renameCounter });
   } catch (err) {
     console.error(err);
     return res.status(500).send('Error reading video files.');
