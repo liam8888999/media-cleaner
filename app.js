@@ -163,7 +163,7 @@ app.get('/video/:path*', (req, res) => {
 });
 
 
-app.post('/rename', async (req, res) => {
+app.post('/rename', (req, res) => {
   const userSession = req.session;
 
  // Initialize a counter if not present in the session
