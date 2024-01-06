@@ -86,7 +86,16 @@
               <input type="text" name="episodeName" id="episodeName" required>
               <br>
               <label for="newLocation">New Location (required):</label>
-              <input type="text" name="newLocation" id="newLocation" required>
+              <select id="newLocation" name="newLocation" required>
+              <option value="GDAU">GDAU (AUS, NZ, CA, ZA)</option>
+              <option value="GDUS">GDUS (USA)</option>
+              <option value="GDGB">GDGB (Great Britain)</option>
+              <option value="GDJP">GDJP (Japanese)</option>
+              <option value="GDFO">GDFO (Food)</option>
+              <option value="GDIE">GDIE (Ireland)</option>
+              <option value="GDOT">GDOT (Other countries)</option>
+              <option value="GDFI">Movies</option>
+              </select>
               <input type="text" name="currentVideo" id="currentVideo" value="<%= videoInfo.filename %>" style="display: none;">
               <br>
               <button type="submit">Move</button>
