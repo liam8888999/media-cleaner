@@ -37,15 +37,11 @@ app.get('/', (req, res) => {
   // Redirect to the /next route
  // res.redirect('/next');
 });
-app.post(`/setup', (req,res) => {
-
-    req.session.discorduser = req.body.discorduser;
-console.log(req.session.discorduser)
- 
+app.post('/setup', (req, res) => {
+  req.session.discorduser = req.body.discorduser;
+  console.log(req.session.discorduser);
   res.redirect('/next');
 });
-
-}
 async function listFilesInDir(directoryPath) {
   try {
     const files = await fs.promises.readdir(directoryPath);
