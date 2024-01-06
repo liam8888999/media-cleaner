@@ -185,8 +185,9 @@ app.post('/rename', (req, res) => {
   }
 
   const newFileLocation = path.join('/home/liam2003/archive-cleaner-files/archive-cleaner/!Individual User Folders/Liam/web-test-renamed', newLocation, `${newName}${fileExtension}`);
+  const newFolderLocation = path.join('/home/liam2003/archive-cleaner-files/archive-cleaner/!Individual User Folders/Liam/web-test-renamed', newLocation);
   console.log(newFileLocation)
-  createDirectoryIfNotExists(newFileLocation)
+  createDirectoryIfNotExists(newFolderLocation)
   fs.rename(currentVideo, newFileLocation, (err) => {
     if (err) {
       console.error(err);
