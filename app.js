@@ -37,11 +37,6 @@ app.get('/', (req, res) => {
   // Redirect to the /next route
  // res.redirect('/next');
 });
-app.post('/setup', (req, res) => {
-  
-  console.log("setup" + req.session.discorduser);
-  res.redirect('/next');
-});
 async function listFilesInDir(directoryPath) {
   try {
     const files = await fs.promises.readdir(directoryPath);
@@ -70,7 +65,7 @@ async function listFilesInDir(directoryPath) {
 }
 app.get('/next', async (req, res) => {
   const userSession = req.session;
-  req.session.discorduser = req.body.discorduser;
+  req.session.discorduser = req.query.discorduser;
   console.log("next" + req.session.discorduser)
 
   let unsuretxt = req.query.unsure;
