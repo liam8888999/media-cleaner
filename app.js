@@ -64,15 +64,16 @@ async function listFilesInDir(directoryPath) {
   }
 }
 app.get('/next', async (req, res) => {
-  const userSession = req.session;
-  
+  req.session.discorduser = req.query.discorduser;
+  console.log("next" + req.session.discorduser);
 
   let unsuretxt = req.query.unsure;
   let currentVideounsure = req.query.currentVideo;
-console.log(currentVideounsure)
+  console.log(currentVideounsure);
+
   try {
     const files = await listFilesInDir(videoDirectory);
-    console.log(files)
+    console.log(files);
 
     // Filter out files starting with a dot (hidden files) and select compatible video files
     const filteredFiles = files.filter(file => {
@@ -84,20 +85,20 @@ console.log(currentVideounsure)
     }
 
     // Randomly select a video different from req.body.currentVideo if unsuretxt is true
-    if (unsuretxt = "true") {
+    if (unsuretxt === "true") {
       let newVideo;
       do {
         newVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
       } while (newVideo === currentVideounsure);
-      userSession.currentVideo = newVideo;
+      req.session.currentVideo = newVideo;
     } else {
       // Randomly select the first video if not set in the session
-      if (!userSession.currentVideo) {
-        userSession.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
+      if (!req.session.currentVideo) {
+        req.session.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
       }
     }
 
-    const videoPath = userSession.currentVideo
+    const videoPath = req.session.currentVideo;
     const videoInfo = await getVideoInfo(videoPath);
 
     res.render('index', { videoInfo, noVideo: false });
