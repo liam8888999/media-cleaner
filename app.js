@@ -36,7 +36,6 @@ app.get('/', async (req, res) => {
    res.render('welcome')
   // Redirect to the /next route
  // res.redirect('/next');
-  req.session.renameCounter = req.session.renameCounter || 0;
 });
 async function listFilesInDir(directoryPath) {
   try {
@@ -102,7 +101,7 @@ app.get('/next', async (req, res) => {
     const videoPath = req.session.currentVideo;
     const videoInfo = await getVideoInfo(videoPath);
 console.log("counter: " + req.session.renameCounter)
-    res.render('index', { videoInfo, noVideo: false, progress: req.session.renameCounter });
+    res.render('index', { videoInfo, noVideo: false });
   } catch (err) {
     console.error(err);
     return res.status(500).send('Error reading video files.');
