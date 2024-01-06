@@ -33,15 +33,22 @@ app.use(express.urlencoded({ extended: true }));
 let videoDirectory = '/home/liam2003/archive-cleaner-files/archive-cleaner/!Individual User Folders/Liam/web-test';
 
 app.get('/', (req, res) => {
-  res.send(`<h1>Welcome to the Archive Cleaner task based access center)</h1>
-  <br>
-    <h2> Please insert your discord username below</h2>
-
-  <a href="/next">Submit</a>
-  `)
+   res.render('welcome')
   // Redirect to the /next route
  // res.redirect('/next');
 });
+app.post(`/setup', (req,res) => {
+
+    req.session.discorduser = req.body.discorduser;
+  }
+console.log(req.session.discorduser)
+  // Additional logic as needed
+
+  // Redirect to another page or send a response
+  res.redirect('/next');
+});
+
+}
 async function listFilesInDir(directoryPath) {
   try {
     const files = await fs.promises.readdir(directoryPath);
@@ -70,6 +77,7 @@ async function listFilesInDir(directoryPath) {
 }
 app.get('/next', async (req, res) => {
   const userSession = req.session;
+  console.log(req.session.discorduser)
 
   let unsuretxt = req.query.unsure;
   let currentVideounsure = req.query.currentVideo;
