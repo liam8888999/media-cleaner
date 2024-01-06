@@ -65,8 +65,7 @@ async function listFilesInDir(directoryPath) {
 }
 app.get('/next', async (req, res) => {
   const userSession = req.session;
-  req.session.discorduser = req.query.discorduser;
-  console.log("next" + req.session.discorduser)
+  
 
   let unsuretxt = req.query.unsure;
   let currentVideounsure = req.query.currentVideo;
