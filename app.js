@@ -100,7 +100,7 @@ app.get('/next', async (req, res) => {
 
     const videoPath = req.session.currentVideo;
     const videoInfo = await getVideoInfo(videoPath);
-
+console.log("counter: " + req.session.renameCounter)
     res.render('index', { videoInfo, noVideo: false, progress: req.session.renameCounter });
   } catch (err) {
     console.error(err);
