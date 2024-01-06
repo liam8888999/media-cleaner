@@ -111,29 +111,10 @@
               <option value="Movies">Movies</option>
               </select>
               <input type="text" name="currentVideo" id="currentVideo" value="<%= videoInfo.filename %>" style="display: none;">
-                <!-- Hidden input to store the combined values -->
-              <input type="hidden" id="newLocation" name="newLocation">
               <br>
               <button type="submit" onsubmit="combineDropdownValues()">Move</button>
           </form>
           <br>
- <script>
-    function combineDropdownValues() {
-      var firstDropdown = document.getElementById('newCollection');
-      var secondDropdown = document.getElementById('newGenre');
-      var combinedValuesInput = document.getElementById('newLocation');
-
-      var value1 = firstDropdown.value;
-      var value2 = secondDropdown.value;
-
-      // Combine the values with a slash
-      var combinedValues = value1 + '/' + value2;
-
-      // Set the combined values as the value of the hidden input
-      combinedValuesInput.value = combinedValues;
-console.log(combinedValues)
-    }
-</script>
           <script>
   // Wait for 30 seconds (30000 milliseconds) before showing the form
   setTimeout(function() {
