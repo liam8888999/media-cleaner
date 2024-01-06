@@ -10,7 +10,7 @@ const port = 47199;
 const createDirectoryIfNotExists = (directoryPath) => {
   if (directoryPath && directoryPath.trim() !== '') {
   if (!fs.existsSync(directoryPath)) {
-    fs.mkdirSync(directoryPath);
+    fs.mkdirSync(directoryPath, { recursive: true });
     logger.success(`Directory created: ${directoryPath}`);
   } else {
     logger.warn(`Directory already exists, will not be created: ${directoryPath}`);
