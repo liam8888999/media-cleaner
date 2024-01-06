@@ -85,8 +85,8 @@
               <label for="episodeName">Episode Name:</label>
               <input type="text" name="episodeName" id="episodeName" required>
               <br>
-              <label for="newLocation">New Location (required):</label>
-              <select id="newLocation" name="newLocation" required>
+              <label for="newCollection">Collection:</label>
+              <select id="newCollection" name="newCollection" required>
               <option value="GDAU">GDAU (AUS, NZ, CA, ZA)</option>
               <option value="GDUS">GDUS (USA)</option>
               <option value="GDGB">GDGB (Great Britain)</option>
@@ -96,11 +96,42 @@
               <option value="GDOT">GDOT (Other countries)</option>
               <option value="GDFI">Movies</option>
               </select>
+              <label for="newGenre">Genre:</label>
+              <select id="newGenre" name="newGenre" required>
+              <option value="Children's & Family">Children's & Family</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Documentries & News">Documentaries & News</option>
+              <option value="Drama">Drama</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Game Shows">Game Shows</option>
+              <option value="Reality">Reality</option>
+              <option value="Lifestyle">Lifestyle</option>
+              <option value="Talk Shows">Talk Shows</option>
+              <option value="Misc">Misc</option>
+              <option value="Movies">Movies</option>
+              </select>
               <input type="text" name="currentVideo" id="currentVideo" value="<%= videoInfo.filename %>" style="display: none;">
+                <!-- Hidden input to store the combined values -->
+              <input type="hidden" id="newLocation" name="newLocation">
               <br>
               <button type="submit">Move</button>
           </form>
           <br>
+ <script>
+    function combineDropdownValues() {
+      var firstDropdown = document.getElementById('newCollection');
+      var secondDropdown = document.getElementById('newGenre');
+      var combinedValuesInput = document.getElementById('newLocation');
+
+      var value1 = firstDropdown.value;
+      var value2 = secondDropdown.value;
+
+      // Combine the values with a slash
+      var combinedValues = value1 + '/' + value2;
+
+      // Set the combined values as the value of the hidden input
+      combinedValuesInput.value = combinedValues;
+    }
           <script>
   // Wait for 30 seconds (30000 milliseconds) before showing the form
   setTimeout(function() {
