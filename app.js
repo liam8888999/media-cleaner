@@ -33,8 +33,14 @@ app.use(express.urlencoded({ extended: true }));
 let videoDirectory = '/home/liam2003/archive-cleaner-files/archive-cleaner/!Individual User Folders/Liam/web-test';
 
 app.get('/', (req, res) => {
+  res.render(<h1>Welcome to the Archive Cleaner task based access center)</h1>
+  <br>
+    <h2> Please insert your discord username below</h2>
+
+  <a href="/next">Submit</a>
+  )
   // Redirect to the /next route
-  res.redirect('/next');
+ // res.redirect('/next');
 });
 async function listFilesInDir(directoryPath) {
   try {
