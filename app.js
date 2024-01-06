@@ -11,9 +11,9 @@ const createDirectoryIfNotExists = (directoryPath) => {
   if (directoryPath && directoryPath.trim() !== '') {
   if (!fs.existsSync(directoryPath)) {
     fs.mkdirSync(directoryPath, { recursive: true });
-    logger.success(`Directory created: ${directoryPath}`);
+    console.success(`Directory created: ${directoryPath}`);
   } else {
-    logger.warn(`Directory already exists, will not be created: ${directoryPath}`);
+    console.warn(`Directory already exists, will not be created: ${directoryPath}`);
   }
 }
 };
@@ -58,7 +58,7 @@ async function listFilesInDir(directoryPath) {
     const results = await Promise.all(filePromises);
     return results.flat().filter(Boolean); // Remove undefined values
   } catch (error) {
-    logger.error(`Error reading directory for directory listing: ${error}`);
+    console.error(`Error reading directory for directory listing: ${error}`);
     return [];
   }
 }
