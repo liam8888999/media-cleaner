@@ -73,42 +73,35 @@ app.get('/next', async (req, res) => {
   console.log(currentVideounsure);
 
   try {
-    const files = await listFilesInDir(videoDirectory);
-    console.log(files);
+  const files = await listFilesInDir(videoDirectory);
+  console.log(files);
 
-    // Filter out files starting with a dot (hidden files) and select compatible video files
-    const filteredFiles = files.filter(file => {
-      return !file.startsWith('.') && /\.(mp4|webm|ogg)$/i.test(file);
-    });
+  // Filter out files starting with a dot (hidden files) and select compatible video files
+  const filteredFiles = files.filter(file => {
+    return !file.startsWith('.') && /\.(mp4|webm|ogg)$/i.test(file);
+  });
 
-    if (filteredFiles.length === 0) {
-      return res.render('index', { videoInfo: null, noVideo: true });
-    }
-
-   
-     let newVideo;
-do {
-  newVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
-} while (newVideo === req.session.currentVideo);
-
-req.session.currentVideo = newVideo;
-
-} else {
-  // Randomly select the first video if not set in the session
-  if (!req.session.currentVideo) {
-    req.session.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
+  if (filteredFiles.length === 0) {
+    return res.render('index', { videoInfo: null, noVideo: true });
   }
+
+  let newVideo;
+  do {
+    newVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
+  } while (newVideo === req.session.currentVideo);
+
+  req.session.currentVideo = newVideo;
+  
+  const videoPath = req.session.currentVideo;
+  const videoInfo = await getVideoInfo(videoPath);
+  let progress = req.session.renameCounter;
+  console.log("counter: " + progress)
+  res.render('index', { videoInfo, noVideo: false, progress });
+
+} catch (err) {
+  console.error(err);
+  return res.status(500).send('Error reading video files.');
 }
-
-    const videoPath = req.session.currentVideo;
-    const videoInfo = await getVideoInfo(videoPath);
-     let progress = req.session.renameCounter;
-console.log("counter: " + progress)
-    res.render('index', { videoInfo, noVideo: false, progress });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).send('Error reading video files.');
-  }
 });
 
 
