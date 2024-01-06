@@ -86,7 +86,7 @@ console.log(currentVideounsure)
     const videoPath = userSession.currentVideo
     const videoInfo = await getVideoInfo(videoPath);
 
-    res.render('/home/liam2003/media-cleaner/index', { videoInfo, noVideo: false });
+    res.render('index', { videoInfo, noVideo: false });
   } catch (err) {
     console.error(err);
     return res.status(500).send('Error reading video files.');
