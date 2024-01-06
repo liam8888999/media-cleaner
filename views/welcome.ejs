@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Archive Cleaner</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #4d4d4d;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        center {
+            text-align: center;
+        }
+
+        #container {
+            flex: 1;
+            display: flex;
+            max-height: 60%;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        #video-container {
+            width: 30%;
+            height: 60%;
+            float: right;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+        }
+
+        #info-container {
+            width: 70%;
+            height: 60%;
+            float: left;
+        }
+    .hidden {
+      display: none;
+    }
+    </style>
+</head>
+<body>
+    <center><h1>Archive Cleaner</h1></center>
+    <br>
+    <br>
+   <center><h3>Please enter your discord username below</h3></center>
+   <br>
+   <br>
+   User
+<form method="post" action="/setup">
+  <input type="text" name="discorduser" id="discorduser" required>
+  <button type="submit">Continue</button>
+
+</form>
+</body>
+</html>
