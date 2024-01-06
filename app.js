@@ -96,7 +96,7 @@ app.get('/next', async (req, res) => {
       if (!req.session.currentVideo) {
         req.session.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
       }
-
+  }
 
     const videoPath = req.session.currentVideo;
     const videoInfo = await getVideoInfo(videoPath);
