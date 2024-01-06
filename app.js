@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
  // res.redirect('/next');
 });
 app.post('/setup', (req, res) => {
-  req.session.discorduser = req.body.discorduser;
+  
   console.log("setup" + req.session.discorduser);
   res.redirect('/next');
 });
@@ -70,6 +70,7 @@ async function listFilesInDir(directoryPath) {
 }
 app.get('/next', async (req, res) => {
   const userSession = req.session;
+  req.session.discorduser = req.body.discorduser;
   console.log("next" + req.session.discorduser)
 
   let unsuretxt = req.query.unsure;
