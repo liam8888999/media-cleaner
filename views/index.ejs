@@ -73,21 +73,12 @@
 
           <center><h2>Rename/Move File</h2></center>
           <form method="post" action="/rename">
-              <label for="showName">Show Name:</label>
-              <input type="text" name="showName" id="showName" required>
-              <br>
-              <label for="newseason">Season Number:</label>
-              <input type="number" name="newseason" id="newseason" required>
-              <br>
-              <label for="newepisode">Episode Number:</label>
-              <input type="number" name="newepisode" id="newepisode" required>
-              <br>
-              <label for="episodeName">Episode Name:</label>
-              <input type="text" name="episodeName" id="episodeName" required>
-              <br>
-              <label for="newCollection">Collection:</label>
+                          <label for="newCollection">Collection:</label>
               <select id="newCollection" name="newCollection" required>
-              <option value="GDAU">GDAU (AUS, NZ, CA, ZA)</option>
+              <option value="GDAU/AU">Australia(AU)</option>
+              <option value="GDAU/NZ">New Zealand (NZ)</option>
+              <option value="GDAU/CA">Canada (CA)</option>
+              <option value="GDAU/ZA">South Africa (ZA)</option>
               <option value="GDUS">GDUS (USA)</option>
               <option value="GDGB">GDGB (Great Britain)</option>
               <option value="GDJP">GDJP (Japanese)</option>
@@ -110,6 +101,19 @@
               <option value="Misc">Misc</option>
               <option value="Movies">Movies</option>
               </select>
+<br>
+              <label for="showName">Show Name:</label>
+              <input type="text" name="showName" id="showName" required>
+              <br>
+              <label for="newseason">Season Number:</label>
+              <input type="number" name="newseason" id="newseason" required>
+              <br>
+              <label for="newepisode">Episode Number:</label>
+              <input type="number" name="newepisode" id="newepisode" required>
+              <br>
+              <label for="episodeName">Episode Name:</label>
+              <input type="text" name="episodeName" id="episodeName" required>
+              <br>
               <input type="text" name="currentVideo" id="currentVideo" value="<%= videoInfo.filename %>" style="display: none;">
               <br>
               <button type="submit" onsubmit="combineDropdownValues()">Move</button>
