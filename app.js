@@ -11,9 +11,9 @@ const createDirectoryIfNotExists = (directoryPath) => {
   if (directoryPath && directoryPath.trim() !== '') {
   if (!fs.existsSync(directoryPath)) {
     fs.mkdirSync(directoryPath, { recursive: true });
-    console.success(`Directory created: ${directoryPath}`);
+    console.log(`Directory created: ${directoryPath}`);
   } else {
-    console.warn(`Directory already exists, will not be created: ${directoryPath}`);
+    console.error(`Directory already exists, will not be created: ${directoryPath}`);
   }
 }
 };
