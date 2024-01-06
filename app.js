@@ -86,17 +86,19 @@ app.get('/next', async (req, res) => {
     }
 
    
-      let newVideo;
-      do {
-        newVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
-      } while (newVideo === currentVideo);
-      req.session.currentVideo = newVideo;
-    } else {
-      // Randomly select the first video if not set in the session
-      if (!req.session.currentVideo) {
-        req.session.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
-      }
+     let newVideo;
+do {
+  newVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
+} while (newVideo === req.session.currentVideo);
+
+req.session.currentVideo = newVideo;
+
+} else {
+  // Randomly select the first video if not set in the session
+  if (!req.session.currentVideo) {
+    req.session.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
   }
+}
 
     const videoPath = req.session.currentVideo;
     const videoInfo = await getVideoInfo(videoPath);
