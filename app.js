@@ -64,7 +64,7 @@ async function listFilesInDir(directoryPath) {
   }
 }
 app.get('/next', async (req, res) => {
-  userSession.renameCounter = userSession.renameCounter || 0;
+  req.session.renameCounter = req.session.renameCounter || 0;
   req.session.discorduser = req.query.discorduser;
   console.log("next" + req.session.discorduser);
 
