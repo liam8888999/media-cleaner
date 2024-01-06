@@ -18,7 +18,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-let videoDirectory = '/Users/liam/Documents/GitHub/media-cleaner/videos';
+let videoDirectory = '/home/liam2003/archive-cleaner-files/archive-cleaner/!Individual User Folders/Liam/web-test';
 
 app.get('/', (req, res) => {
   // Redirect to the /next route
@@ -53,24 +53,34 @@ async function listFilesInDir(directoryPath) {
 app.get('/next', async (req, res) => {
   const userSession = req.session;
 
+  let unsuretxt = req.query.unsure;
+  let currentVideounsure = req.query.currentVideo;
+console.log(currentVideounsure)
   try {
     const files = await listFilesInDir(videoDirectory);
     console.log(files)
 
-    // Filter out files starting with a dot (hidden files)
+    // Filter out files starting with a dot (hidden files) and select compatible video files
     const filteredFiles = files.filter(file => {
-  // Check if the file doesn't start with a dot (.)
-  // and has a video file extension compatible with HTML5 (e.g., mp4, webm, ogg)
-  return !file.startsWith('.') && /\.(mp4|webm|ogg)$/i.test(file);
-});
+      return !file.startsWith('.') && /\.(mp4|webm|ogg)$/i.test(file);
+    });
 
     if (filteredFiles.length === 0) {
       return res.render('index', { videoInfo: null, noVideo: true });
     }
 
-    // Randomly select the first video if not set in the session
-    if (!userSession.currentVideo) {
-      userSession.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
+    // Randomly select a video different from req.body.currentVideo if unsuretxt is true
+    if (unsuretxt = "true") {
+      let newVideo;
+      do {
+        newVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
+      } while (newVideo === currentVideounsure);
+      userSession.currentVideo = newVideo;
+    } else {
+      // Randomly select the first video if not set in the session
+      if (!userSession.currentVideo) {
+        userSession.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
+      }
     }
 
     const videoPath = userSession.currentVideo
@@ -82,6 +92,8 @@ app.get('/next', async (req, res) => {
     return res.status(500).send('Error reading video files.');
   }
 });
+
+
 
 async function getVideoInfo(videoPath) {
   return new Promise((resolve, reject) => {
@@ -158,7 +170,7 @@ app.post('/rename', (req, res) => {
     return res.status(400).send('New Location is required.');
   }
 
-  const newFileLocation = path.join(newLocation, `${newName}${fileExtension}`);
+  const newFileLocation = path.join('/home/liam2003/archive-cleaner-files/archive-cleaner/!Individual User Folders/Liam/web-test-renamed', newLocation, `${newName}${fileExtension}`);
   console.log(newFileLocation)
   fs.rename(currentVideo, newFileLocation, (err) => {
     if (err) {
@@ -169,7 +181,7 @@ app.post('/rename', (req, res) => {
     // Check if the user has made 15 rename requests
         if (userSession.renameCounter === 15) {
           // Display a message to the user
-          res.send('Congratulations! You have made 15 rename requests.');
+          res.send('Congratulations! You have made 15 rename requests. The current access details are:');
         } else {
           // Redirect to the home page or any other desired page
           res.redirect('/');

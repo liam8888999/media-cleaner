@@ -106,7 +106,10 @@
 
 <!-- Your form with the "hidden" class initially -->
 <form method="get" action="/next" class="hidden" id="unsurebutton">
+  <input type="text" name="unsure" id="unsure" value="true" style="display: none;">
+  <input type="text" name="currentVideo" id="currentVideo" value="<%= videoInfo.filename %>" style="display: none;">
   <button type="submit">Unsure</button>
+
 </form>
       </div>
         <div id="video-container">
