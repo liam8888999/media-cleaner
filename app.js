@@ -15,6 +15,7 @@ app.use(session({
 }));
 
 app.set('view engine', 'ejs');
+app.set('views', path.join('/home/liam2003/media-cleaner', 'views'))
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
