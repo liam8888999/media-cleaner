@@ -161,7 +161,9 @@ app.post('/rename', (req, res) => {
   const season = req.body.newseason;
   const episode = req.body.newepisode;
   const episodeName = req.body.episodeName;
-  const newLocation = req.body.newLocation;
+  const newGenre = req.body.newGenre;
+  const newCollection = req.body.newCollection;
+  const newLocation = newLocation + "/" + newGenre
 
   const newName = `${showName} - ${season}x${episode} - ${episodeName}`
 
