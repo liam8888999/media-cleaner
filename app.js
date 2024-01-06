@@ -7,6 +7,17 @@ const path = require('path');
 const app = express();
 const port = 47199;
 
+const createDirectoryIfNotExists = (directoryPath) => {
+  if (directoryPath && directoryPath.trim() !== '') {
+  if (!fs.existsSync(directoryPath)) {
+    fs.mkdirSync(directoryPath);
+    logger.success(`Directory created: ${directoryPath}`);
+  } else {
+    logger.warn(`Directory already exists, will not be created: ${directoryPath}`);
+  }
+}
+};
+
 // Use sessions
 app.use(session({
   secret: 'your-secret-key', // Change this to a secure random string
@@ -175,6 +186,7 @@ app.post('/rename', (req, res) => {
 
   const newFileLocation = path.join('/home/liam2003/archive-cleaner-files/archive-cleaner/!Individual User Folders/Liam/web-test-renamed', newLocation, `${newName}${fileExtension}`);
   console.log(newFileLocation)
+  createDirectoryIfNotExists(newFileLocation)
   fs.rename(currentVideo, newFileLocation, (err) => {
     if (err) {
       console.error(err);
