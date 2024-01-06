@@ -40,11 +40,8 @@ app.get('/', (req, res) => {
 app.post(`/setup', (req,res) => {
 
     req.session.discorduser = req.body.discorduser;
-  }
 console.log(req.session.discorduser)
-  // Additional logic as needed
-
-  // Redirect to another page or send a response
+ 
   res.redirect('/next');
 });
 
