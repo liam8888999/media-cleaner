@@ -85,8 +85,7 @@ app.get('/next', async (req, res) => {
       return res.render('index', { videoInfo: null, noVideo: true });
     }
 
-    // Randomly select a video different from req.body.currentVideo if unsuretxt is true
-    if (unsuretxt === "true") {
+   
       let newVideo;
       do {
         newVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
@@ -97,7 +96,7 @@ app.get('/next', async (req, res) => {
       if (!req.session.currentVideo) {
         req.session.currentVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
       }
-    }
+
 
     const videoPath = req.session.currentVideo;
     const videoInfo = await getVideoInfo(videoPath);
