@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 
 let videoDirectory = '/home/liam2003/archive-cleaner-files/archive-cleaner/!Individual User Folders/Liam/web-test';
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
    res.render('welcome')
   // Redirect to the /next route
  // res.redirect('/next');
