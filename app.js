@@ -89,7 +89,7 @@ app.get('/next', async (req, res) => {
       let newVideo;
       do {
         newVideo = filteredFiles[Math.floor(Math.random() * filteredFiles.length)];
-      } while (newVideo === currentVideounsure);
+      } while (newVideo === currentVideo);
       req.session.currentVideo = newVideo;
     } else {
       // Randomly select the first video if not set in the session
