@@ -64,6 +64,7 @@ async function listFilesInDir(directoryPath) {
   }
 }
 app.get('/next', async (req, res) => {
+  userSession.renameCounter = userSession.renameCounter || 0;
   req.session.discorduser = req.query.discorduser;
   console.log("next" + req.session.discorduser);
 
@@ -100,8 +101,9 @@ app.get('/next', async (req, res) => {
 
     const videoPath = req.session.currentVideo;
     const videoInfo = await getVideoInfo(videoPath);
-console.log("counter: " + req.session.renameCounter)
-    res.render('index', { videoInfo, noVideo: false });
+     let progress = req.session.renameCounter;
+console.log("counter: " + progress)
+    res.render('index', { videoInfo, noVideo: false, progress });
   } catch (err) {
     console.error(err);
     return res.status(500).send('Error reading video files.');
