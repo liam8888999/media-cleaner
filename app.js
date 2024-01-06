@@ -36,6 +36,7 @@ app.get('/', async (req, res) => {
    res.render('welcome')
   // Redirect to the /next route
  // res.redirect('/next');
+  req.session.renameCounter = req.session.renameCounter || 0;
 });
 async function listFilesInDir(directoryPath) {
   try {
