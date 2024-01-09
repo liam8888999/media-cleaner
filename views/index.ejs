@@ -66,10 +66,12 @@
     <div id="container">
       <div id="info-container">
           <center><h2>Video Information</h2></center>
+<div style="padding-left:25px;">
           <p>Filename: <%= videoInfo.videoname %></p>
           <p>Duration: <%= videoInfo.duration %></p>
           <p>Resolution: <%= videoInfo.resolution.width %>x<%= videoInfo.resolution.height %></p>
           <p>Codec: <%= videoInfo.codec %></p>
+</div>
 
           <center><h2>Rename/Move File</h2></center>
       <center>    <form method="post" action="/rename">
